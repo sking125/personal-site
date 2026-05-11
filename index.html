@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sam King — Investment Banking</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a26;
+    --border: #1e1e2e;
+    --text: #e8e6e3;
+    --text-muted: #8a8a9a;
+    --accent: #c9a84c;
+    --accent-dim: rgba(201, 168, 76, 0.12);
+    --accent-glow: rgba(201, 168, 76, 0.25);
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-content { animation: fadeUp 1s ease forwards; opacity: 0; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover {
+    background: #dbb854;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    animation: fadeUp 1s ease 0.3s forwards;
+    opacity: 0;
+  }
+
+  .stats-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(201, 168, 76, 0.3);
+    background: var(--bg-card-hover);
+    transform: translateX(-4px);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stat-card:hover::before { opacity: 1; }
+
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .stat-value span { color: var(--accent); font-size: 1rem; }
+
+  section {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header { margin-bottom: 60px; }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--white);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .exp-timeline { display: flex; flex-direction: column; gap: 24px; }
+
+  .exp-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding: 36px 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: all 0.4s;
+    position: relative;
+  }
+
+  .exp-card:hover { border-color: rgba(201, 168, 76, 0.25); background: var(--bg-card-hover); }
+
+  .exp-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; padding-top: 4px; }
+  .exp-role { font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .exp-company { font-size: 0.9rem; color: var(--accent); font-weight: 500; margin-bottom: 12px; }
+  .exp-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+  .exp-tags { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .exp-tag { padding: 4px 12px; background: var(--accent-dim); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+
+  .involve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+
+  .involve-card {
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: all 0.4s;
+  }
+
+  .involve-card:hover { border-color: rgba(201, 168, 76, 0.25); transform: translateY(-3px); }
+
+  .involve-name { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+  .involve-role { font-size: 0.8rem; color: var(--accent); font-weight: 500; margin-bottom: 10px; }
+  .involve-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+  .interests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+  .interest-card {
+    padding: 40px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .interest-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .interest-card:hover { border-color: rgba(201, 168, 76, 0.2); transform: translateY(-4px); }
+  .interest-card:hover::after { opacity: 1; }
+
+  .interest-emoji { font-size: 2.4rem; margin-bottom: 16px; display: block; }
+  .interest-name { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+  .interest-detail { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+  .contact-section { text-align: center; padding: 120px 48px; }
+  .contact-section .section-title { margin-bottom: 16px; }
+  .contact-desc { color: var(--text-muted); font-size: 1rem; margin-bottom: 40px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  .contact-link {
+    padding: 14px 28px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  footer {
+    padding: 32px 48px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .divider { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+  .divider hr { border: none; height: 1px; background: var(--border); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 16px; }
+    .nav-links a { font-size: 0.72rem; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    section { padding: 60px 24px; }
+    .exp-card { grid-template-columns: 1fr; gap: 8px; }
+    .interests-grid { grid-template-columns: 1fr 1fr; }
+    .contact-section { padding: 80px 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .interests-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">S<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#involvement">Involvement</a></li>
+    <li><a href="photography.html">Photography</a></li>
+    <li><a href="#interests">Interests</a></li>
+    <li><a href="pitches.html">Stock Pitches</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-tag">Actively Pursing a Career in Investment Banking</div>
+      <h1>Sam<br><em>Finance &amp; Strategy</em></h1>
+      <p class="hero-desc">
+        Sophomore at Arizona State University studying Finance with a minor in History. 
+        Passionate about Investing, Powerlifting, Tennis, and Automobile Photography.
+      </p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">Get in Touch →</a>
+        <a href="#experience" class="btn-outline">View Experience</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="stats-stack">
+        <div class="stat-card">
+          <div class="stat-label">Education</div>
+          <div class="stat-value">Arizona State University</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Focus Areas</div>
+          <div class="stat-value">Industrials <span>&</span> Business Services</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Study</div>
+          <div class="stat-value">Finance <span>+</span> History</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+<section id="experience" class="fade-in">
+  <div class="section-header">
+    <div class="section-label">Experience</div>
+    <div class="section-title">Where I've Worked</div>
+  </div>
+  <div class="exp-timeline">
+    <div class="exp-card">
+      <div class="exp-date">April 26' - Present</div>
+      <div>
+        <div class="exp-role">Investment Banking Analyst Intern</div>
+        <div class="exp-company">Columbia West Capital</div>
+        <div class="exp-desc">
+          Supported multiple engagements across life sciences, construction, and data center cooling verticals. Contributed to a life sciences equity raise including CIM preparation, financial modeling, investor outreach, and deal organization. Assisted on sell-side mandates in the construction and data center infrastructure spaces.
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">Life Sciences</span>
+          <span class="exp-tag">Construction</span>
+          <span class="exp-tag">Data Centers</span>
+          <span class="exp-tag">Equity Raise</span>
+          <span class="exp-tag">CIM</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-date">January 26' - April 26'</div>
+      <div>
+        <div class="exp-role">Investment Banking Analyst Intern</div>
+        <div class="exp-company">Ardent Advisory Group</div>
+        <div class="exp-desc">
+          Worked on a ~$500M car wash platform transaction, building financial models and preparing Confidential Information Memoranda. Supported additional deal processes across the car wash, roofing, and HVAC sectors.
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">Industrials</span>
+          <span class="exp-tag">$500M+ Deal</span>
+          <span class="exp-tag">Financial Modeling</span>
+          <span class="exp-tag">CIM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+<section id="involvement" class="fade-in">
+  <div class="section-header">
+    <div class="section-label">Campus Involvement</div>
+    <div class="section-title">Leadership & Clubs</div>
+  </div>
+  <div class="involve-grid">
+    <div class="involve-card">
+      <div class="involve-name">Investment Banking Industry Scholars</div>
+      <div class="involve-role">Member</div>
+      <div class="involve-desc">Competitive program focusing on investment banking fundamentals, technicals, and networking.</div>
+    </div>  
+    <div class="involve-card">
+      <div class="involve-name">Applied Value Investing Club</div>
+      <div class="involve-role">Reasearch Analyst</div>
+      <div class="involve-desc">Arizona's premier investment organization focused on public equities.</div>
+    </div>      
+    <div class="involve-card">
+      <div class="involve-name">Investment Banking and Finance Club</div>
+      <div class="involve-role">Vice President</div>
+      <div class="involve-desc">Introductory club to the investment banking industry and culture</div>
+    </div>     
+    <div class="involve-card">
+      <div class="involve-name">TAMID Fund</div>
+      <div class="involve-role">Member</div>
+      <div class="involve-desc">Investment and consulting engagements with Israeli startups and growth-stage companies.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+<section id="interests" class="fade-in">
+  <div class="section-header">
+    <div class="section-label">Beyond Finance</div>
+    <div class="section-title">My Passions</div>
+  </div>
+  <div class="interests-grid">
+    <div class="interest-card">
+      <span class="interest-emoji">🏛️</span>
+      <div class="interest-name">Ancient History</div>
+      <div class="interest-detail">Minor at ASU. Fascinated by the economic systems and battle strategies of ancient civilizations.</div>
+    </div>
+    <div class="interest-card">
+      <span class="interest-emoji">📷</span>
+      <div class="interest-name">Car Photography</div>
+      <div class="interest-detail">Capturing automotive design and engineering through a creative lens.</div>
+    </div>
+    <div class="interest-card">
+      <span class="interest-emoji">🏋️</span>
+      <div class="interest-name">Powerlifting</div>
+      <div class="interest-detail">Discipline, and the pursuit of strength through a mulitude of training methodologies</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+<section id="contact" class="contact-section fade-in">
+  <div class="section-title">Get In Touch</div>
+  <p class="contact-desc">
+  </p>
+  <div class="contact-links">
+    <a href="mailto:sking125@asu.edu" class="contact-link">✉ Email</a>
+    <a href="https://www.linkedin.com/in/sam-king1/" class="contact-link">LinkedIn</a>
+    <a href="resume.pdf" class="contact-link" target="_blank">📄 Resume</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Sam King.
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
